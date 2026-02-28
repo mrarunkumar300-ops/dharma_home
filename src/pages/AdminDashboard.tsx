@@ -49,14 +49,14 @@ const AdminDashboard = () => {
   const adminMetrics = [
     { 
       title: "Total Revenue", 
-      value: formatAmount(totalRevenue), 
+      value: formatAmount(totalRevenue, 'INR'), 
       change: `${collectionRate}% collection rate`, 
       changeType: Number(collectionRate) > 80 ? "positive" as const : Number(collectionRate) > 60 ? "neutral" as const : "negative" as const, 
       icon: CurrencyIcon 
     },
     { 
       title: "Total Invoiced", 
-      value: formatAmount(totalInvoiced), 
+      value: formatAmount(totalInvoiced, 'INR'), 
       change: `${invoices.length} total invoices`, 
       changeType: "positive" as const, 
       icon: FileText 
@@ -134,7 +134,7 @@ const AdminDashboard = () => {
                   <CardContent>
                     <div className="text-2xl font-bold">{pendingInvoices}</div>
                     <p className="text-xs text-muted-foreground">
-                      {formatAmount(invoices.filter((i: any) => i.status === "pending").reduce((sum: number, i: any) => sum + Number(i.amount), 0))} pending
+                      {formatAmount(invoices.filter((i: any) => i.status === "pending").reduce((sum: number, i: any) => sum + Number(i.amount), 0), 'INR')} pending
                     </p>
                     <Progress value={invoices.length > 0 ? (pendingInvoices / invoices.length) * 100 : 0} className="mt-2" />
                   </CardContent>
@@ -154,7 +154,7 @@ const AdminDashboard = () => {
                   <CardContent>
                     <div className="text-2xl font-bold text-destructive">{overdueInvoices}</div>
                     <p className="text-xs text-muted-foreground">
-                      {formatAmount(invoices.filter((i: any) => i.status === "overdue").reduce((sum: number, i: any) => sum + Number(i.amount), 0))} overdue
+                      {formatAmount(invoices.filter((i: any) => i.status === "overdue").reduce((sum: number, i: any) => sum + Number(i.amount), 0), 'INR')} overdue
                     </p>
                     <Badge variant={overdueInvoices > 0 ? "destructive" : "secondary"} className="mt-2">
                       {overdueInvoices > 0 ? "Action Required" : "All Clear"}

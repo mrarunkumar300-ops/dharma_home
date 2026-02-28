@@ -329,19 +329,19 @@ const Billing = () => {
     const statsData = [
         { 
             title: "Total Invoiced", 
-            value: formatAmount(invoiceStats?.total || 0), 
+            value: formatAmount(invoiceStats?.total || 0, 'INR'), 
             change: invoiceStats?.monthlyChange !== undefined ? `${invoiceStats?.monthlyChange >= 0 ? '+' : ''}${Math.round(Math.abs(invoiceStats?.monthlyChange || 0))}%` : "+0%", 
             trend: invoiceStats?.monthlyChange >= 0 ? "up" : invoiceStats?.monthlyChange < 0 ? "down" : "up" 
         },
         { 
             title: "Paid", 
-            value: formatAmount(invoiceStats?.paid || 0), 
+            value: formatAmount(invoiceStats?.paid || 0, 'INR'), 
             change: invoiceStats?.paidPercentage !== undefined ? `${Math.round(invoiceStats?.paidPercentage)}%` : "0%", 
             trend: "up" 
         },
         { 
             title: "Overdue", 
-            value: formatAmount(invoiceStats?.overdue || 0), 
+            value: formatAmount(invoiceStats?.overdue || 0, 'INR'), 
             change: invoiceStats?.total > 0 ? `${Math.round((invoiceStats?.overdue / invoiceStats?.total) * 100)}%` : "0%", 
             trend: "down" 
         },
@@ -559,16 +559,16 @@ const Billing = () => {
                                                 {new Date(invoice.due_date).toLocaleDateString()}
                                             </td>
                                             <td className="p-4 font-medium">
-                                                {formatAmount(invoice.amount)}
+                                                {formatAmount(invoice.amount, 'INR')}
                                             </td>
                                             <td className="p-4">
                                                 <span className="font-medium text-green-600">
-                                                    {formatAmount(getPaidAmount(invoice))}
+                                                    {formatAmount(getPaidAmount(invoice), 'INR')}
                                                 </span>
                                             </td>
                                             <td className="p-4">
                                                 <span className={`font-medium ${getPendingAmount(invoice) > 0 ? 'text-orange-600' : 'text-green-600'}`}>
-                                                    {formatAmount(getPendingAmount(invoice))}
+                                                    {formatAmount(getPendingAmount(invoice), 'INR')}
                                                 </span>
                                             </td>
                                             <td className="p-4">

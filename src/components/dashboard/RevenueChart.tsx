@@ -8,6 +8,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { useCurrency } from "@/hooks/useCurrency";
 
 const revenueData = [
   { month: "Jan", revenue: 42000, expenses: 28000 },
@@ -20,6 +21,9 @@ const revenueData = [
 ];
 
 export function RevenueChart() {
+  const { currency, formatAmount, getCurrencySymbol } = useCurrency();
+  const symbol = getCurrencySymbol();
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -57,7 +61,11 @@ export function RevenueChart() {
           </defs>
           <CartesianGrid strokeDasharray="3 3" stroke="hsl(217, 33%, 20%)" />
           <XAxis dataKey="month" stroke="hsl(215, 20%, 65%)" fontSize={12} />
-          <YAxis stroke="hsl(215, 20%, 65%)" fontSize={12} tickFormatter={(v) => `$${v / 1000}k`} />
+          <YAxis 
+            stroke="hsl(215, 20%, 65%)" 
+            fontSize={12} 
+            tickFormatter={(v) => `${symbol}${(v / 1000).toFixed(0)}k`} 
+          />
           <Tooltip
             contentStyle={{
               backgroundColor: "hsl(221, 39%, 11%)",
@@ -65,7 +73,7 @@ export function RevenueChart() {
               borderRadius: "12px",
               fontSize: "13px",
             }}
-            formatter={(value: number) => [`$${value.toLocaleString()}`, ""]}
+            formatter={(value: number) => [formatAmount(value, 'INR'), ""]}
           />
           <Area type="monotone" dataKey="revenue" stroke="hsl(263, 58%, 59%)" fill="url(#revenueGrad)" strokeWidth={2} />
           <Area type="monotone" dataKey="expenses" stroke="hsl(271, 81%, 56%)" fill="url(#expenseGrad)" strokeWidth={2} />

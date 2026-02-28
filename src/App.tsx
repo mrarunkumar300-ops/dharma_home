@@ -18,7 +18,7 @@ const App = () => {
           <TooltipProvider>
             <Toaster />
             <Sonner />
-            <BrowserRouter>
+            <BrowserRouter basename="/dharma_home">
               <AuthProvider>
                 <AppRoutes />
               </AuthProvider>
