@@ -24,7 +24,7 @@ export const useUserRole = () => {
           
           // 🛡️ FALLBACK 1: Check user metadata
           if (error.message?.includes('permission') || error.code === 'PGRST116') {
-            console.log('🔄 RLS blocking role access, checking user metadata');
+            console.log('🔄 Permission denied, checking user metadata');
             const userMetadata = user.user_metadata;
             if (userMetadata?.role) {
               console.log('✅ Found role in user metadata:', userMetadata.role);
