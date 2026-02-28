@@ -60,26 +60,26 @@ USING (EXISTS (
 ));
 
 -- Function to check if user is organization member
-CREATE OR REPLACE FUNCTION public.is_org_member(user_id UUID, org_id UUID) 
+CREATE OR REPLACE FUNCTION public.is_org_member(_user_id UUID, _org_id UUID) 
 RETURNS BOOLEAN 
 LANGUAGE sql 
 SECURITY DEFINER 
 AS $$
   SELECT EXISTS (
     SELECT 1 FROM public.profiles 
-    WHERE id = user_id AND organization_id = org_id
+    WHERE id = _user_id AND organization_id = _org_id
   );
 $$;
 
 -- Function to check if user has specific role
-CREATE OR REPLACE FUNCTION public.has_role(user_id UUID, role_name TEXT) 
+CREATE OR REPLACE FUNCTION public.has_role(_user_id UUID, _role_name TEXT) 
 RETURNS BOOLEAN 
 LANGUAGE sql 
 SECURITY DEFINER 
 AS $$
   SELECT EXISTS (
     SELECT 1 FROM public.user_roles 
-    WHERE user_id = user_id AND role = role_name
+    WHERE user_id = _user_id AND role = _role_name::app_role
   );
 $$;
 

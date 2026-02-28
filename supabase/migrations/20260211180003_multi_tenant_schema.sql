@@ -59,7 +59,7 @@ CREATE TABLE public.tenant_family_members (
 );
 
 -- Tenant documents
-CREATE TABLE public.tenant_documents (
+CREATE TABLE IF NOT EXISTS public.tenant_documents (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   tenant_id UUID REFERENCES public.tenants_profile(id) ON DELETE CASCADE NOT NULL,
   document_type TEXT NOT NULL, -- 'id_proof', 'agreement', 'photo', 'other'

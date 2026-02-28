@@ -1,11 +1,25 @@
 -- Strict Role Assignment Fix Migration
 -- Add 'user' role to the enum and add strict validation
 
--- Drop existing enum and recreate with all values (PostgreSQL doesn't support ALTER TYPE for adding values in order)
-DROP TYPE IF EXISTS public.app_role;
-
--- Recreate enum with all required roles in specific order
-CREATE TYPE public.app_role AS ENUM ('admin', 'manager', 'user', 'tenant');
+-- Add 'user' role to the enum if it doesn't exist
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_enum 
+    WHERE enumtypid = 'public.app_role'::regtype 
+    AND enumlabel = 'user'
+  ) THEN
+    ALTER TYPE public.app_role ADD VALUE 'user';
+  END IF;
+  
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_enum 
+    WHERE enumtypid = 'public.app_role'::regtype 
+    AND enumlabel = 'tenant'
+  ) THEN
+    ALTER TYPE public.app_role ADD VALUE 'tenant';
+  END IF;
+END $$;
 
 -- Create a function for strict role validation
 CREATE OR REPLACE FUNCTION public.validate_role_assignment(
@@ -180,7 +194,6 @@ SELECT
     THEN true 
     ELSE false 
   END as has_role_mismatch,
-  ur.created_at as role_assigned_at,
   au.created_at as user_created_at,
   CASE 
     WHEN ur.role::TEXT IN ('admin', 'manager', 'user', 'tenant') THEN true
